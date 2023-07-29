@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabadanapp-service
+spec:
+  selector:
+    app: rabadanapp
+  ports:
+    - protocol: TCP
+      port: 80 # Порт, на который будет доступно ваше приложение извне
+      targetPort: 3000 # Порт внутри контейнера, куда будет перенаправлен трафик
+  type: LoadBalancer # Тип сервиса, LoadBalancer позволит вам получить внешний IP-адрес для доступа к приложению

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabadanapp-deployment
+spec:
+  replicas: 2 # Количество реплик (подов) вашего приложения
+  selector:
+    matchLabels:
+      app: rabadanapp
+  template:
+    metadata:
+      labels:
+        app: rabadanapp
+    spec:
+      containers:
+        - name: rabadanapp-container
+          image: rabadanapp/rabadan_app_image:latest # Замените на адрес вашего Docker-образа
+          ports:
+            - containerPort: 3000 # Порт, на котором ваше приложение слушает в контейнере

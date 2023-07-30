@@ -1,29 +1,60 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_REGISTRY = 'rabadanapp' // Замените на URL вашего Docker Registry
+        DOCKER_IMAGE_NAME = 'rabadan_app_image' // Замените на имя Docker-образа вашего приложения
+        RUBY_VERSION = '3.2.2' // Версия Ruby, которую вы хотите использовать
+        RAILS_ENV = 'production' // Окружение для деплоя на продакшн
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-credentials', url: 'https://github.com/rabadan/rabadan_app.git'
+                // Клонирование репозитория из GitHub
+                git 'https://github.com/rabadan/rabadan_app.git'
             }
         }
 
-        stage('Install dependencies') {
+        stage('Build Docker image') {
             steps {
-                sh 'bundle install'
+                // Сборка Docker-образа с вашим приложением
+                sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Push Docker image to registry') {
+            steps {
+                // Публикация Docker-образа в Docker Registry
+                sh "docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASS} ${DOCKER_REGISTRY}"
+                sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
             }
         }
 
         stage('Run tests') {
             steps {
                 // Запуск тестов с помощью RSpec и сохранение результатов в файл junit.xml
-                sh 'bundle exec rspec --format RspecJunitFormatter --out junit.xml'
+                sh 'docker run --rm ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} bundle exec rspec --format RspecJunitFormatter --out junit.xml'
+            }
+            post {
+                // Архивирование результатов тестов
+                always {
+                    junit 'junit.xml'
+                }
+            }
+        }
+
+        stage('Deploy to production') {
+            steps {
+                sh "kubectl apply -f rails-app-deployment.yaml"
+                sh "kubectl apply -f rails-app-service.yaml"
             }
         }
     }
 
     post {
         always {
+            // Очистка рабочего пространства после сборки (опционально)
             cleanWs()
         }
     }

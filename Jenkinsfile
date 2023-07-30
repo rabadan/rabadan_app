@@ -9,11 +9,10 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Клонирование репозитория из GitHub
-                git 'https://github.com/rabadan/rabadan_app.git'
-            }
+        stage("Env Build Number"){
+          steps{
+            echo "The build number is ${env.BUILD_NUMBER}"
+          }
         }
 
         stage('Build Docker image') {

@@ -5,7 +5,8 @@ pipeline {
         DOCKER_REGISTRY = 'rabadanapp' // Замените на URL вашего Docker Registry
         DOCKER_IMAGE_NAME = 'rabadan_app_image' // Замените на имя Docker-образа вашего приложения
         RUBY_VERSION = '3.2.2' // Версия Ruby, которую вы хотите использовать
-        RAILS_ENV = 'production' // Окружение для деплоя на продакшн
+        DOCKER_LOGIN = credentials('DOCKER_LOGIN')
+        DOCKER_PASS = credentials('DOCKER_PASS')
     }
 
     stages {

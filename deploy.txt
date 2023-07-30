@@ -1,0 +1,5 @@
+docker build -t rabadan_app_image:latest .
+docker tag rabadan_app_image:latest rabadanapp/rabadan_app_image:v2
+docker push rabadanapp/rabadan_app_image:v2
+kubectl apply -f rails-app-deployment.yaml
+kubectl apply -f rails-app-service.yaml

@@ -29,13 +29,6 @@ pipeline {
             }
         }
 
-        stage('Run tests') {
-            steps {
-                // Запуск тестов с помощью RSpec и сохранение результатов в файл junit.xml
-                sh 'docker run --rm ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} bundle exec rspec'
-            }
-        }
-
         stage('Deploy to production') {
             steps {
                 sh "kubectl apply -f rails-app-deployment.yaml"

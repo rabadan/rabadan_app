@@ -8,6 +8,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout Source') {
+            steps {
+                git 'https://github.com/rabadan/rabadan_app.git'
+            }
+        }
+
         stage('Build Docker image') {
             steps {
                 // Сборка Docker-образа с вашим приложением

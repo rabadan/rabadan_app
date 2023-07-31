@@ -26,13 +26,7 @@ pipeline {
         stage('Run tests') {
             steps {
                 // Запуск тестов с помощью RSpec и сохранение результатов в файл junit.xml
-                sh 'docker run --rm ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} bundle exec rspec --format RspecJunitFormatter --out junit.xml'
-            }
-            post {
-                // Архивирование результатов тестов
-                always {
-                    junit 'junit.xml'
-                }
+                sh 'docker run --rm ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} bundle exec rspec'
             }
         }
 

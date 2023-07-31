@@ -31,8 +31,8 @@ pipeline {
 
         stage('Deploy to production') {
             steps {
-                sh "KUBECONFIG=/var/config kubectl apply -f rails-app-deployment.yaml"
-                sh "KUBECONFIG=/var/config kubectl apply -f rails-app-service.yaml"
+                sh "KUBECONFIG=${params.KUBECONFIG} kubectl apply -f rails-app-deployment.yaml"
+                sh "KUBECONFIG=${params.KUBECONFIG} kubectl apply -f rails-app-service.yaml"
             }
         }
     }

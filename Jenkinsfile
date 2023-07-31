@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY = 'docker.io/rabadanapp/rabadanapp' // Замените на URL вашего Docker Registry
+        DOCKER_REGISTRY = 'docker.io/rabadanapp' // Замените на URL вашего Docker Registry
         DOCKER_IMAGE_NAME = 'rabadan_app_image' // Замените на имя Docker-образа вашего приложения
         RUBY_VERSION = '3.2.2' // Версия Ruby, которую вы хотите использовать
     }

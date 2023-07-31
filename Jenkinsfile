@@ -2,19 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY = 'rabadanapp' // Замените на URL вашего Docker Registry
+        DOCKER_REGISTRY = 'docker.io' // Замените на URL вашего Docker Registry
         DOCKER_IMAGE_NAME = 'rabadan_app_image' // Замените на имя Docker-образа вашего приложения
         RUBY_VERSION = '3.2.2' // Версия Ruby, которую вы хотите использовать
     }
 
     stages {
-        stage("Env Build Number"){
-          steps{
-            echo "The build number is ${env.BUILD_NUMBER}"
-            echo "DOCKER LOGIN is ${params.DOCKER_LOGIN}"
-          }
-        }
-
         stage('Build Docker image') {
             steps {
                 // Сборка Docker-образа с вашим приложением
